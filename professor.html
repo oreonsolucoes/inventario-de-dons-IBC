@@ -92,9 +92,12 @@
   @keyframes flash{0%{background:#fff6df55}100%{background:transparent}}
   .rowbtn{background:none;border:none;color:var(--gold);cursor:pointer;font-weight:600;font-size:13px;font-family:inherit;padding:0}
   .detail{background:var(--paper);font-size:13px;color:var(--muted)}
-  .detail .chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
-  .detail .chip{background:var(--field-bg);border:1px solid var(--line);border-radius:999px;padding:3px 10px;font-size:12px;color:var(--text);font-weight:600}
-  .detail .chip b{color:var(--gold)}
+  .detail .dlabel{font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-weight:700;color:var(--muted);margin-bottom:8px}
+  .detail .chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:0}
+  .detail .chip{background:var(--field-bg);border:1px solid var(--line);border-radius:999px;padding:4px 11px;font-size:12px;color:var(--text);font-weight:600}
+  .detail .chip b{color:var(--muted);margin-left:2px}
+  .detail .chip-hi{background:var(--pill-bg);border-color:var(--pill-bd);color:var(--pill-tx)}
+  .detail .chip-hi b{color:var(--pill-tx)}
 
   /* CARDS mobile (substitui a tabela) */
   .cards{display:none;padding:8px 14px 16px;flex-direction:column;gap:10px}
@@ -288,9 +291,25 @@
   }
 
   function detailHtml(r){
-    var chips=(r.destaques||[]).map(function(d){ return '<span class="chip">'+esc(d.nome)+' <b>'+d.pontos+'</b></span>'; }).join("");
-    return 'Dons em destaque (≥17): '+(chips||"nenhum acima de 17")+
-           '<div class="chips">'+allScoreChips(r)+'</div>';
+    if(!r.pontuacoes) return '<div class="dlabel">Perfil não disponível.</div>';
+    // monta lista dos 14 dons ordenada do maior para o menor
+    var arr = GIFTS.map(function(g){
+      var p = r.pontuacoes[g.key];
+      return { nome:g.name, pontos: p ? p.pontos : 0 };
+    }).sort(function(a,b){ return b.pontos - a.pontos; });
+
+    var chips = arr.map(function(x){
+      var hi = x.pontos >= THRESHOLD;
+      return '<span class="chip'+(hi?' chip-hi':'')+'">'+esc(x.nome)+' <b>'+x.pontos+'</b></span>';
+    }).join("");
+
+    var qtd = arr.filter(function(x){ return x.pontos>=THRESHOLD; }).length;
+    var label = qtd
+      ? qtd+' dom'+(qtd>1?'s':'')+' em destaque (17+ pontos, marcados em dourado)'
+      : 'Nenhum dom atingiu 17 pontos';
+
+    return '<div class="dlabel">Perfil completo — '+label+'</div>'+
+           '<div class="chips">'+chips+'</div>';
   }
 
   function renderList(){
@@ -345,14 +364,6 @@
         if(b.textContent.indexOf("detalhes")>=0) b.textContent=open[id]?"ocultar detalhes":(b.textContent.indexOf("ver")>=0?"ver detalhes":"detalhes");
       });
     });
-  }
-
-  function allScoreChips(r){
-    if(!r.pontuacoes) return "";
-    return GIFTS.map(function(g){
-      var p=r.pontuacoes[g.key]; if(!p) return "";
-      return '<span class="chip">'+esc(g.name)+' <b>'+p.pontos+'</b></span>';
-    }).join("");
   }
 
   function renderGiftBars(){
