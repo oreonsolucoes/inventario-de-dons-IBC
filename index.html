@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="light" data-fs="1">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#3a2352">
+<title>Inventário de Dons Espirituais</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#20142e; --plum:#3a2352; --plum-2:#4d2f6b;
+    --gold:#c8992e; --gold-soft:#e6c46a;
+    --paper:#f7f3ec; --paper-2:#efe8db; --line:#e0d6c6;
+    --text:#2a2033; --muted:#6b5f72;
+    --field-bg:#ffffff; --opt-bg:#ffffff; --opt-bg-hover:#fffdf8;
+    --page-bg: radial-gradient(1200px 600px at 80% -10%, #2c1a3f 0%, transparent 60%),
+               radial-gradient(900px 500px at -10% 110%, #35205033 0%, transparent 55%), var(--ink);
+    --shadow:0 20px 50px -24px rgba(32,20,46,.5);
+    --foot:#b9a7c9;
+  }
+  [data-theme="dark"]{
+    --ink:#0f0a16; --plum:#2a1a3d; --plum-2:#3a2552;
+    --gold:#e0b34d; --gold-soft:#f0cf82;
+    --paper:#1c1526; --paper-2:#251b33; --line:#3a2f47;
+    --text:#ece6f2; --muted:#a99bb8;
+    --field-bg:#241a32; --opt-bg:#241a32; --opt-bg-hover:#2c2140;
+    --page-bg: radial-gradient(1200px 600px at 80% -10%, #241539 0%, transparent 60%),
+               radial-gradient(900px 500px at -10% 110%, #1a1028 0%, transparent 55%), #08050c;
+    --shadow:0 20px 50px -24px rgba(0,0,0,.7);
+    --foot:#6b5c7d;
+  }
+  :root{ --fs:1; }
+  [data-fs="0"]{ --fs:.88; }
+  [data-fs="1"]{ --fs:1; }
+  [data-fs="2"]{ --fs:1.16; }
+  [data-fs="3"]{ --fs:1.32; }
+  html{ font-size:calc(100% * var(--fs)); }
+
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{
+    font-family:'Inter',system-ui,sans-serif;
+    background:var(--page-bg);
+    color:var(--text);
+    min-height:100vh;
+    -webkit-font-smoothing:antialiased;
+    line-height:1.5;
+    transition:background .3s;
+  }
+  .wrap{max-width:760px;margin:0 auto;padding:clamp(14px,4vw,32px) clamp(12px,4vw,20px) 80px}
+
+  .a11y{display:flex;align-items:center;gap:8px;flex-wrap:wrap;max-width:760px;margin:0 auto;padding:12px clamp(12px,4vw,20px) 0;color:#e6dcf2}
+  .a11y .grp{display:flex;align-items:center;gap:6px;background:#ffffff18;border:1px solid #ffffff26;border-radius:999px;padding:5px 8px;backdrop-filter:blur(6px)}
+  .a11y .grp .lbl{font-size:11px;font-weight:600;letter-spacing:.04em;opacity:.85;padding:0 4px}
+  .a11y button{appearance:none;border:none;cursor:pointer;font-family:inherit;font-weight:700;background:#ffffff1f;color:#fff;border-radius:8px;min-width:34px;height:30px;font-size:14px;display:inline-flex;align-items:center;justify-content:center;transition:background .15s}
+  .a11y button:hover{background:#ffffff33}
+  .a11y button:focus-visible{outline:2px solid var(--gold-soft);outline-offset:2px}
+  .a11y button[aria-pressed="true"]{background:var(--gold);color:#2a1e07}
+
+  .card{background:var(--paper);border-radius:22px;box-shadow:var(--shadow);overflow:hidden;margin-top:12px}
+
+  .masthead{background:linear-gradient(160deg,var(--plum) 0%,var(--plum-2) 60%,var(--ink) 100%);color:#f7f3ec;padding:clamp(26px,6vw,38px) clamp(22px,5vw,34px) clamp(24px,5vw,34px);position:relative}
+  .masthead:after{content:"";position:absolute;left:clamp(22px,5vw,34px);right:clamp(22px,5vw,34px);bottom:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent);opacity:.6}
+  .brand{display:flex;align-items:center;gap:13px;margin-bottom:18px}
+  .brand img{width:52px;height:52px;border-radius:12px;object-fit:contain;background:#ffffff14;padding:4px;border:1px solid #ffffff22}
+  .brand .mono{width:52px;height:52px;border-radius:12px;background:linear-gradient(135deg,var(--gold),#b3821f);color:#2a1e07;display:none;align-items:center;justify-content:center;font-family:'Fraunces',serif;font-weight:700;font-size:24px}
+  .brand .church{font-size:13px;font-weight:600;color:#e6d7f2;letter-spacing:.02em;line-height:1.25}
+  .eyebrow{font-size:12px;letter-spacing:.28em;text-transform:uppercase;color:var(--gold-soft);font-weight:600;margin:0 0 12px}
+  h1{font-family:'Fraunces',serif;font-weight:600;font-size:clamp(26px,7vw,42px);line-height:1.04;margin:0;letter-spacing:-.01em}
+  .sub{color:#d9cce6;margin:14px 0 0;font-size:clamp(14px,3.6vw,15px);max-width:46ch}
+  [data-theme="dark"] .sub{color:#c2b3d4}
+
+  .body{padding:clamp(20px,5vw,34px)}
+
+  label{display:block;font-weight:600;font-size:14px;margin:0 0 7px;color:var(--plum)}
+  [data-theme="dark"] label{color:var(--gold-soft)}
+  input[type=text],input[type=tel]{width:100%;padding:14px 16px;border:1.5px solid var(--line);border-radius:12px;font-size:16px;font-family:inherit;background:var(--field-bg);color:var(--text);transition:border-color .15s,box-shadow .15s}
+  input:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 4px #c8992e33}
+  .field{margin-bottom:20px}
+
+  .btn{appearance:none;border:none;cursor:pointer;font-family:inherit;font-weight:600;font-size:16px;padding:15px 22px;border-radius:12px;transition:transform .12s,box-shadow .2s,background .2s,opacity .2s}
+  .btn:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+  .btn-primary{background:linear-gradient(135deg,var(--gold) 0%,#b3821f 100%);color:#2a1e07;box-shadow:0 10px 24px -10px #c8992e99}
+  .btn-primary:hover{transform:translateY(-1px)}
+  .btn-primary:disabled{opacity:.4;cursor:not-allowed;transform:none;box-shadow:none}
+  .btn-ghost{background:transparent;color:var(--plum);border:1.5px solid var(--line)}
+  [data-theme="dark"] .btn-ghost{color:var(--gold-soft)}
+  .btn-ghost:hover{background:var(--paper-2)}
+
+  .instructions{background:var(--paper-2);border-radius:14px;padding:18px 20px;margin:26px 0 6px;font-size:14px;color:var(--muted)}
+  .instructions b{color:var(--plum)}
+  [data-theme="dark"] .instructions b{color:var(--gold-soft)}
+  .scale{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+  .scale span{background:var(--field-bg);border:1px solid var(--line);border-radius:999px;padding:4px 12px;font-size:12.5px;font-weight:600;color:var(--plum)}
+  [data-theme="dark"] .scale span{color:var(--gold-soft)}
+
+  .progress-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:10px;flex-wrap:wrap}
+  .progress-head .step{font-family:'Fraunces',serif;font-size:clamp(18px,4.5vw,20px);color:var(--plum);font-weight:600}
+  [data-theme="dark"] .progress-head .step{color:var(--gold-soft)}
+  .progress-head .count{font-size:13px;color:var(--muted);font-weight:600}
+  .bar{height:8px;background:var(--paper-2);border-radius:999px;overflow:hidden}
+  .bar>i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--gold-soft),var(--gold));border-radius:999px;transition:width .3s}
+
+  .qtext{font-family:'Fraunces',serif;font-size:clamp(18px,4.6vw,24px);line-height:1.34;color:var(--text);margin:22px 0;font-weight:500;overflow-wrap:break-word}
+  .qnum{color:var(--gold);font-weight:600;margin-right:8px}
+
+  .opts{display:grid;gap:10px}
+  .opt{display:flex;align-items:center;gap:13px;padding:15px 16px;border:1.5px solid var(--line);border-radius:13px;background:var(--opt-bg);cursor:pointer;transition:all .14s;font-size:clamp(15px,4vw,16px);font-weight:500;color:var(--text);text-align:left;width:100%;font-family:inherit}
+  .opt:hover{border-color:var(--gold-soft);background:var(--opt-bg-hover)}
+  .opt:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+  .opt .dot{width:22px;height:22px;border-radius:50%;border:2px solid var(--line);flex:none;transition:all .14s;position:relative}
+  .opt .txt{flex:1;min-width:0}
+  .opt .val{font-size:12.5px;color:var(--muted);font-weight:600;white-space:nowrap}
+  .opt.sel{border-color:var(--gold);background:linear-gradient(180deg,var(--opt-bg-hover),var(--paper-2))}
+  .opt.sel .dot{border-color:var(--gold);background:var(--gold)}
+  .opt.sel .dot:after{content:"";position:absolute;inset:4px;background:var(--paper);border-radius:50%}
+
+  .nav{display:flex;gap:12px;margin-top:26px}
+  .nav .btn{flex:1}
+  .hint{font-size:12.5px;color:var(--muted);text-align:center;margin:14px 0 0}
+
+  .result-hero{text-align:center;padding:8px 0 4px}
+  .result-hero .badge{display:inline-block;font-size:12px;letter-spacing:.24em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:10px}
+  .result-hero h2{font-family:'Fraunces',serif;font-size:clamp(22px,6vw,34px);margin:0;color:var(--text)}
+  .main-gift{margin:24px 0;padding:clamp(20px,5vw,26px);border-radius:18px;text-align:center;color:#f7f3ec;background:linear-gradient(150deg,var(--plum) 0%,var(--plum-2) 100%);overflow:hidden}
+  .main-gift .k{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold-soft);font-weight:700}
+  .main-gift .n{font-family:'Fraunces',serif;font-size:clamp(24px,7vw,38px);margin:6px 0 10px;font-weight:600}
+  .main-gift .d{font-size:clamp(13.5px,3.6vw,14.5px);color:#e3d7ef;max-width:52ch;margin:0 auto}
+  .main-gift .pts{margin-top:14px;font-size:13px;color:var(--gold-soft);font-weight:600}
+
+  .rank{list-style:none;margin:8px 0 0;padding:0;display:grid;gap:8px}
+  .rank li{display:flex;align-items:center;gap:12px;padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:var(--field-bg);flex-wrap:wrap}
+  .rank .name{font-weight:600;color:var(--text);flex:1 1 55%;min-width:0}
+  .rank .name small{display:block;font-weight:500;color:var(--muted);font-size:12.5px;margin-top:2px;overflow-wrap:break-word}
+  .rank .track{flex:1 1 90px;min-width:80px;height:8px;background:var(--paper-2);border-radius:999px;overflow:hidden}
+  .rank .track>i{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,var(--gold-soft),var(--gold))}
+  .rank .sc{font-family:'Fraunces',serif;font-weight:600;color:var(--plum);min-width:30px;text-align:right;flex:none}
+  [data-theme="dark"] .rank .sc{color:var(--gold-soft)}
+  .rank li.hi{border-color:var(--gold);background:var(--opt-bg-hover)}
+  .tag-hi{font-size:11px;background:var(--gold);color:#2a1e07;font-weight:700;padding:2px 8px;border-radius:999px;white-space:nowrap}
+
+  .section-title{font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:700;margin:30px 0 12px}
+  .note{font-size:13px;color:var(--muted);margin-top:22px;text-align:center;line-height:1.6}
+  .note b{color:var(--plum)} [data-theme="dark"] .note b{color:var(--gold-soft)}
+  .foot{text-align:center;color:var(--foot);font-size:12px;margin-top:22px}
+  .hidden{display:none!important}
+  .saving{font-size:13px;color:var(--muted);text-align:center;margin-top:14px}
+  .err{background:#fbe9e9;border:1px solid #e7b7b7;color:#9a2b2b;padding:10px 14px;border-radius:10px;font-size:13.5px;margin-top:14px}
+  [data-theme="dark"] .err{background:#3a1a1a;border-color:#6a2f2f;color:#f0a5a5}
+
+  @media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<div class="a11y" role="group" aria-label="Acessibilidade">
+  <div class="grp" role="group" aria-label="Tamanho do texto">
+    <span class="lbl">Texto</span>
+    <button id="fsDown" aria-label="Diminuir tamanho do texto">A−</button>
+    <button id="fsUp" aria-label="Aumentar tamanho do texto">A+</button>
+  </div>
+  <div class="grp">
+    <span class="lbl">Tema</span>
+    <button id="themeBtn" aria-pressed="false" aria-label="Alternar tema claro e escuro">🌙 Escuro</button>
+  </div>
+</div>
+
+<div class="wrap">
+  <div class="card">
+    <div class="masthead">
+      <div class="brand">
+        <img id="logo" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRZuyJiqZha3xVGcgcmCLu8XDV2RQfWBpqkVbM51VcPT-QjduSUWmo78GZL&s=10" alt="Logo da igreja" onerror="this.style.display='none';document.getElementById('mono').style.display='flex';">
+        <div class="mono" id="mono">✝</div>
+        <div class="church">Igreja<br>Inventário de Dons</div>
+      </div>
+      <p class="eyebrow">Inventário</p>
+      <h1>Descubra seus<br>Dons Espirituais</h1>
+      <p class="sub">84 afirmações que traçam o seu perfil. Responda com sinceridade, pensando na sua experiência real — não no que soa mais bonito.</p>
+    </div>
+    <div class="body">
+
+      <section id="screen-start">
+        <div class="field">
+          <label for="nome">Nome completo</label>
+          <input type="text" id="nome" placeholder="Seu nome" autocomplete="name">
+        </div>
+        <div class="field">
+          <label for="tel">Telefone</label>
+          <input type="tel" id="tel" placeholder="(11) 90000-0000" autocomplete="tel" inputmode="numeric">
+        </div>
+        <div class="instructions">
+          Para cada afirmação, escolha quanto ela descreve a <b>sua experiência de vida</b>:
+          <div class="scale"><span>Muito · 4</span><span>Às vezes · 2</span><span>Raramente · 1</span><span>Nunca · 0</span></div>
+        </div>
+        <div class="nav"><button class="btn btn-primary" id="btnStart" style="flex:1">Começar o teste →</button></div>
+        <div id="startErr"></div>
+      </section>
+
+      <section id="screen-quiz" class="hidden">
+        <div class="progress-head">
+          <span class="step" id="qStep">Pergunta 1</span>
+          <span class="count" id="qCount">1 de 84</span>
+        </div>
+        <div class="bar"><i id="qBar"></i></div>
+        <p class="qtext"><span class="qnum" id="qNum">01.</span><span id="qText"></span></p>
+        <div class="opts" id="qOpts" role="radiogroup" aria-label="Opções de resposta"></div>
+        <div class="nav">
+          <button class="btn btn-ghost" id="btnPrev">← Voltar</button>
+          <button class="btn btn-primary" id="btnNext" disabled>Próxima →</button>
+        </div>
+        <p class="hint" id="qHint">Escolha uma opção e toque em “Próxima”.</p>
+      </section>
+
+      <section id="screen-result" class="hidden">
+        <div class="result-hero">
+          <span class="badge">Seu resultado</span>
+          <h2 id="rHello">Pronto!</h2>
+        </div>
+        <div class="main-gift">
+          <div class="k">Dom principal</div>
+          <div class="n" id="rMainName">—</div>
+          <div class="d" id="rMainDesc">—</div>
+          <div class="pts" id="rMainPts"></div>
+        </div>
+        <div id="rSecWrap">
+          <div class="section-title">Dons em destaque (17 pontos ou mais)</div>
+          <ul class="rank" id="rSecList"></ul>
+        </div>
+        <div class="section-title">Perfil completo</div>
+        <ul class="rank" id="rAllList"></ul>
+        <p class="note">Guarde este resultado. Próximo passo: <b>pratique</b> o dom descoberto, <b>avalie</b> como a igreja o aproveita e <b>priorize</b> as atividades ligadas a ele.</p>
+        <div id="saveMsg" class="saving"></div>
+      </section>
+
+    </div>
+  </div>
+  <p class="foot">Inventário de Dons Espirituais — Lourenço Stelio Rega ©</p>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+<script src="firebase-config.js"></script>
+<script src="data.js"></script>
+<script>
+(function(){
+  var $ = function(id){ return document.getElementById(id); };
+  var root = document.documentElement;
+
+  try{
+    var st = localStorage.getItem("dons_theme"); if(st) root.setAttribute("data-theme", st);
+    var sf = localStorage.getItem("dons_fs");    if(sf!==null) root.setAttribute("data-fs", sf);
+  }catch(e){}
+  function syncTheme(){
+    var dark = root.getAttribute("data-theme")==="dark";
+    var b = $("themeBtn");
+    b.textContent = dark ? "☀️ Claro" : "🌙 Escuro";
+    b.setAttribute("aria-pressed", dark ? "true":"false");
+    var meta=document.querySelector('meta[name=theme-color]'); if(meta) meta.content = dark? "#0f0a16":"#3a2352";
+  }
+  $("themeBtn").addEventListener("click", function(){
+    var dark = root.getAttribute("data-theme")==="dark";
+    root.setAttribute("data-theme", dark?"light":"dark");
+    try{ localStorage.setItem("dons_theme", dark?"light":"dark"); }catch(e){}
+    syncTheme();
+  });
+  function setFs(v){ v=Math.max(0,Math.min(3,v)); root.setAttribute("data-fs",v); try{localStorage.setItem("dons_fs",v);}catch(e){} }
+  $("fsUp").addEventListener("click", function(){ setFs(parseInt(root.getAttribute("data-fs"))+1); });
+  $("fsDown").addEventListener("click", function(){ setFs(parseInt(root.getAttribute("data-fs"))-1); });
+  syncTheme();
+
+  var answers = new Array(QUESTIONS.length).fill(null);
+  var idx = 0;
+  var participant = { nome:"", tel:"" };
+  var db = null;
+  try{ firebase.initializeApp(firebaseConfig); db = firebase.database(); }
+  catch(e){ console.warn("Firebase:", e); }
+
+  var scrOptions = [
+    {label:"Muito", val:4},{label:"Às vezes", val:2},
+    {label:"Raramente", val:1},{label:"Nunca", val:0}
+  ];
+
+  $("btnStart").addEventListener("click", function(){
+    var nome = $("nome").value.trim(), tel = $("tel").value.trim();
+    $("startErr").innerHTML = "";
+    if(nome.length < 2){ $("startErr").innerHTML = '<div class="err">Digite seu nome para continuar.</div>'; return; }
+    if(tel.replace(/\D/g,"").length < 8){ $("startErr").innerHTML = '<div class="err">Digite um telefone válido.</div>'; return; }
+    participant.nome = nome; participant.tel = tel;
+    $("screen-start").classList.add("hidden");
+    $("screen-quiz").classList.remove("hidden");
+    render(); window.scrollTo({top:0,behavior:"smooth"});
+  });
+
+  $("tel").addEventListener("input", function(e){
+    var v = e.target.value.replace(/\D/g,"").slice(0,11);
+    if(v.length>10) v=v.replace(/(\d{2})(\d{5})(\d{0,4})/,"($1) $2-$3");
+    else if(v.length>6) v=v.replace(/(\d{2})(\d{4})(\d{0,4})/,"($1) $2-$3");
+    else if(v.length>2) v=v.replace(/(\d{2})(\d{0,5})/,"($1) $2");
+    else if(v.length>0) v=v.replace(/(\d{0,2})/,"($1");
+    e.target.value=v;
+  });
+
+  function render(){
+    var total = QUESTIONS.length;
+    $("qStep").textContent = "Pergunta " + (idx+1);
+    $("qCount").textContent = (idx+1) + " de " + total;
+    $("qBar").style.width = (idx/total*100) + "%";
+    $("qNum").textContent = String(idx+1).padStart(2,"0") + ".";
+    $("qText").textContent = QUESTIONS[idx];
+
+    var wrap = $("qOpts"); wrap.innerHTML = "";
+    scrOptions.forEach(function(o){
+      var el = document.createElement("button");
+      el.type = "button";
+      el.className = "opt" + (answers[idx]===o.val ? " sel":"");
+      el.setAttribute("role","radio");
+      el.setAttribute("aria-checked", answers[idx]===o.val ? "true":"false");
+      el.innerHTML = '<span class="dot"></span><span class="txt">'+o.label+'</span><span class="val">'+o.val+' pts</span>';
+      el.addEventListener("click", function(){
+        answers[idx] = o.val;
+        render();
+      });
+      wrap.appendChild(el);
+    });
+
+    $("btnPrev").style.visibility = idx===0 ? "hidden":"visible";
+    var answered = answers[idx]!==null;
+    $("btnNext").disabled = !answered;
+    $("btnNext").textContent = idx===total-1 ? "Ver meu resultado ✦" : "Próxima →";
+    $("qHint").textContent = answered
+      ? (idx===total-1 ? "Toque em “Ver meu resultado”." : "Toque em “Próxima” para continuar.")
+      : "Escolha uma opção para liberar o botão “Próxima”.";
+  }
+
+  $("btnPrev").addEventListener("click", function(){ if(idx>0){ idx--; render(); window.scrollTo({top:0,behavior:"smooth"}); }});
+  $("btnNext").addEventListener("click", function(){
+    if(answers[idx]===null) return;
+    if(idx < QUESTIONS.length-1){ idx++; render(); window.scrollTo({top:0,behavior:"smooth"}); }
+    else finish();
+  });
+
+  function computeScores(){
+    return GIFTS.map(function(g){
+      var s = g.q.reduce(function(a,qn){ return a + (answers[qn-1]||0); }, 0);
+      return { key:g.key, name:g.name, score:s, desc:GIFT_DESC[g.key] };
+    });
+  }
+
+  function finish(){
+    var scores = computeScores();
+    var sorted = scores.slice().sort(function(a,b){ return b.score-a.score; });
+    var main = sorted[0];
+    var highlighted = sorted.filter(function(x){ return x.score>=THRESHOLD; });
+
+    $("rHello").textContent = "Pronto, " + participant.nome.split(" ")[0] + "!";
+    $("rMainName").textContent = main.name;
+    $("rMainDesc").textContent = main.desc;
+    $("rMainPts").textContent = main.score + " de 24 pontos";
+
+    var secWrap=$("rSecWrap"), secList=$("rSecList"); secList.innerHTML="";
+    var sec = highlighted.filter(function(x){ return x.key!==main.key; });
+    if(sec.length===0){ secWrap.classList.add("hidden"); }
+    else{ secWrap.classList.remove("hidden"); sec.forEach(function(x){ secList.appendChild(rankRow(x,true)); }); }
+
+    var allList=$("rAllList"); allList.innerHTML="";
+    sorted.forEach(function(x){ allList.appendChild(rankRow(x, x.score>=THRESHOLD)); });
+
+    $("screen-quiz").classList.add("hidden");
+    $("screen-result").classList.remove("hidden");
+    window.scrollTo({top:0,behavior:"smooth"});
+    save(scores, main, highlighted);
+  }
+
+  function rankRow(x, hi){
+    var li = document.createElement("li");
+    if(hi) li.className = "hi";
+    li.innerHTML =
+      '<div class="name">'+x.name+(hi?' <span class="tag-hi">DOM</span>':'')+'<small>'+x.desc.split(",")[0]+'.</small></div>'+
+      '<div class="track"><i style="width:'+Math.round(x.score/24*100)+'%"></i></div>'+
+      '<div class="sc">'+x.score+'</div>';
+    return li;
+  }
+
+  function save(scores, main, highlighted){
+    var msg = $("saveMsg");
+    if(!db){ msg.textContent = "⚠ Firebase não configurado — resultado exibido apenas aqui."; return; }
+    var payload = {
+      nome: participant.nome, telefone: participant.tel,
+      criadoEm: firebase.database.ServerValue.TIMESTAMP,
+      domPrincipal: main.name, domPrincipalChave: main.key, domPrincipalPontos: main.score,
+      destaques: highlighted.map(function(x){ return {chave:x.key,nome:x.name,pontos:x.score}; }),
+      pontuacoes: scores.reduce(function(o,x){ o[x.key]={nome:x.name,pontos:x.score}; return o; }, {}),
+      respostas: answers
+    };
+    msg.textContent = "Salvando resultado…";
+    db.ref("respostas").push(payload)
+      .then(function(){ msg.textContent = "✓ Resultado enviado ao professor."; })
+      .catch(function(e){ msg.textContent = "⚠ Não foi possível enviar: " + e.message; });
+  }
+})();
+</script>
+</body>
+</html>
